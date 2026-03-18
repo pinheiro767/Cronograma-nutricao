@@ -1,9 +1,9 @@
 <!doctype html>
 <html lang="pt-BR">
- <head>
+<head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Calendário Académico - Anatomia Humana</title>
+  <title>Calendário Acadêmico - Anatomia Humana</title>
   <script src="/_sdk/element_sdk.js"></script>
   <style>
     :root {
@@ -34,20 +34,20 @@
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       color: var(--text);
-      background: radial-gradient(circle at top left, rgba(47, 111, 228, 0.1), transparent 26%),
-                  radial-gradient(circle at top right, rgba(18, 165, 148, 0.08), transparent 22%),
-                  linear-gradient(180deg, #f8fbff 0%, var(--bg) 100%);
+      background:
+        radial-gradient(circle at top left, rgba(47, 111, 228, 0.10), transparent 26%),
+        radial-gradient(circle at top right, rgba(18, 165, 148, 0.08), transparent 22%),
+        linear-gradient(180deg, #f8fbff 0%, var(--bg) 100%);
       overflow-y: auto;
     }
 
     .app-wrapper {
       width: 100%;
-      height: 100%;
+      min-height: 100%;
       display: flex;
       flex-direction: column;
-      overflow-y: auto;
     }
 
     .container {
@@ -116,7 +116,7 @@
 
     .pill span {
       font-weight: 700;
-      font-size: 1.1rem;
+      font-size: 1.05rem;
     }
 
     .section {
@@ -137,6 +137,7 @@
     .section p {
       margin: 0;
       color: var(--muted);
+      line-height: 1.6;
     }
 
     .legend {
@@ -165,21 +166,10 @@
       border-radius: 50%;
     }
 
-    .dot.apresentacao {
-      background: var(--green);
-    }
-
-    .dot.aula {
-      background: var(--blue);
-    }
-
-    .dot.prova {
-      background: var(--gold);
-    }
-
-    .dot.recesso {
-      background: var(--red);
-    }
+    .dot.apresentacao { background: var(--green); }
+    .dot.aula { background: var(--blue); }
+    .dot.prova { background: var(--gold); }
+    .dot.recesso { background: var(--red); }
 
     .months {
       display: grid;
@@ -238,13 +228,19 @@
       border-radius: 18px;
       padding: 10px;
       position: relative;
-      cursor: pointer;
+      cursor: default;
       transition: all 0.2s ease;
     }
 
-    .day:hover {
+    .day.has-event {
+      cursor: pointer;
+      box-shadow: 0 12px 24px rgba(22, 50, 79, 0.05);
+    }
+
+    .day.has-event:hover {
       border-color: var(--blue);
       box-shadow: 0 8px 16px rgba(47, 111, 228, 0.1);
+      transform: translateY(-1px);
     }
 
     .day.empty {
@@ -252,21 +248,13 @@
       border: none;
       min-height: 110px;
       cursor: default;
-    }
-
-    .day.empty:hover {
       box-shadow: none;
-      border-color: transparent;
     }
 
     .day-num {
       font-weight: 800;
       font-size: 1rem;
       margin-bottom: 8px;
-    }
-
-    .has-event {
-      box-shadow: 0 12px 24px rgba(22, 50, 79, 0.05);
     }
 
     .event-chip {
@@ -296,10 +284,7 @@
       border-color: #d8e6ff;
     }
 
-    .aula .day-num {
-      color: var(--blue);
-    }
-
+    .aula .day-num { color: var(--blue); }
     .aula .event-chip {
       background: var(--blue-soft);
       color: var(--blue);
@@ -310,10 +295,7 @@
       border-color: #f2dfaf;
     }
 
-    .prova .day-num {
-      color: var(--gold);
-    }
-
+    .prova .day-num { color: var(--gold); }
     .prova .event-chip {
       background: var(--gold-soft);
       color: var(--gold);
@@ -324,10 +306,7 @@
       border-color: #f7d5dc;
     }
 
-    .recesso .day-num {
-      color: var(--red);
-    }
-
+    .recesso .day-num { color: var(--red); }
     .recesso .event-chip {
       background: var(--red-soft);
       color: var(--red);
@@ -338,10 +317,7 @@
       border-color: #cfeee7;
     }
 
-    .apresentacao .day-num {
-      color: var(--green);
-    }
-
+    .apresentacao .day-num { color: var(--green); }
     .apresentacao .event-chip {
       background: var(--green-soft);
       color: var(--green);
@@ -366,10 +342,7 @@
     .modal-overlay {
       display: none;
       position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
+      inset: 0;
       background: rgba(0, 0, 0, 0.5);
       backdrop-filter: blur(4px);
       z-index: 1000;
@@ -502,18 +475,18 @@
       }
 
       .month-grid {
-        grid-template-columns: repeat(7, minmax(38px, 1fr));
-        overflow-x: auto;
-        align-items: start;
+        gap: 4px;
+        padding: 8px;
       }
 
       .dow {
-        font-size: 0.66rem;
+        font-size: 0.62rem;
       }
 
       .day,
       .day.empty {
-        min-height: 88px;
+        min-height: 78px;
+        padding: 6px;
       }
 
       .event-desc {
@@ -521,12 +494,12 @@
       }
 
       .event-chip {
-        font-size: 0.62rem;
+        font-size: 0.58rem;
         padding: 4px 6px;
       }
 
       .event-title {
-        font-size: 0.68rem;
+        font-size: 0.64rem;
       }
 
       .modal-content {
@@ -555,131 +528,129 @@
       }
     }
   </style>
-  <style>body { box-sizing: border-box; }</style>
-  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js" type="text/javascript"></script>
-  <script src="https://cdn.tailwindcss.com/3.4.17" type="text/javascript"></script>
-  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
- </head>
- <body>
+</head>
+<body>
   <div class="app-wrapper">
-   <div class="container"><!-- Hero Section -->
-    <div class="hero"><span class="eyebrow">📘 Course Calendar</span>
-     <h1 id="courseTitle">Anatomia Humana • Nutrição UEM</h1>
-     <p id="courseDescription"></p>
-     <div class="pills">
-      <div class="pill"><strong>Docente</strong> <span id="instructorName">Profa. Cláudia Pinheiro</span>
+    <div class="container">
+
+      <div class="hero">
+        <span class="eyebrow">📘 Calendário Acadêmico</span>
+        <h1 id="courseTitle">Anatomia Humana • Nutrição UEM</h1>
+        <p id="courseDescription">
+          Planejamento anual da disciplina com organização mensal em calendário real, incluindo apresentação da disciplina, aulas, avaliações e períodos de feriado ou recesso acadêmico.
+        </p>
+
+        <div class="pills">
+          <div class="pill">
+            <strong>Docente</strong>
+            <span id="instructorName">Profa. Cláudia Pinheiro</span>
+          </div>
+          <div class="pill">
+            <strong>Período</strong>
+            <span id="coursePeriod">13/03/2026 a 04/12/2026</span>
+          </div>
+          <div class="pill">
+            <strong>Horário</strong>
+            <span id="meetingTime">Sexta-feira • 19h30 às 21h10</span>
+          </div>
+          <div class="pill">
+            <strong>Carga horária</strong>
+            <span>68 horas/aula</span>
+          </div>
+        </div>
       </div>
-      <div class="pill"><strong>Período</strong> <span id="coursePeriod">13/03/2026 a 04/12/2026</span>
+
+      <div class="section">
+        <h2>📅 Legenda do calendário</h2>
+        <p>Cada mês está organizado em formato de calendário real, com os dias da semana e os eventos posicionados nas datas corretas.</p>
+        <div class="legend">
+          <div class="legend-item"><span class="dot apresentacao"></span> Apresentação</div>
+          <div class="legend-item"><span class="dot aula"></span> Aula</div>
+          <div class="legend-item"><span class="dot prova"></span> Avaliação</div>
+          <div class="legend-item"><span class="dot recesso"></span> Feriado / recesso</div>
+        </div>
       </div>
-      <div class="pill"><strong>Horário</strong> <span id="meetingTime">Sexta-feira • 19h30 às 21h10</span>
+
+      <div class="months" id="calendarContainer"></div>
+
+      <div class="section">
+        <h2>📖 Referências</h2>
+        <div class="refs">
+          <div class="ref-item">BAPTISTA, Josemberg da Silva. <strong>Manual de Anatomia Humana para Estudantes de Nutrição</strong>. 1. ed. Rio de Janeiro: Guanabara Koogan, 2020.</div>
+          <div class="ref-item">MOORE, Keith L.; DALLEY, Arthur F.; AGUR, Anne M. R. <strong>Anatomia Orientada para a Clínica</strong>. 9. ed. Rio de Janeiro: Guanabara Koogan, 2023.</div>
+          <div class="ref-item">TORTORA, Gerard J.; DERRICKSON, Bryan H. <strong>Princípios de Anatomia e Fisiologia</strong>. 16. ed. Rio de Janeiro: Guanabara Koogan, 2021.</div>
+          <div class="ref-item">PAULSEN, Friedrich. <strong>Sobotta: Atlas Prático de Anatomia Humana</strong>. 3. ed. Rio de Janeiro: Guanabara Koogan, 2019.</div>
+          <div class="ref-item">SCHÜNKE, Michael; SCHULTE, Erik; SCHUMACHER, Udo. <strong>Prometheus: Atlas de Anatomia</strong> (3 volumes). 4. ed. Rio de Janeiro: Guanabara Koogan, 2019.</div>
+        </div>
       </div>
-      <div class="pill"><strong>Carga horária</strong> <span>68 horas/aula</span>
-      </div>
-     </div>
-    </div><!-- Legend Section -->
-    <div class="section">
-     <h2>📅 Legenda do calendário</h2>
-     <p>Cada mês está organizado em formato de calendário real, com os dias da semana e os eventos posicionados nas datas corretas.</p>
-     <div class="legend">
-      <div class="legend-item"><span class="dot apresentacao"></span> Apresentação
-      </div>
-      <div class="legend-item"><span class="dot aula"></span> Aula
-      </div>
-      <div class="legend-item"><span class="dot prova"></span> Avaliação
-      </div>
-      <div class="legend-item"><span class="dot recesso"></span> Feriado / recesso
-      </div>
-     </div>
-    </div><!-- Calendar Months -->
-    <div class="months" id="calendarContainer"></div><!-- References Section -->
-    <div class="section">
-     <h2>📖 Referências</h2>
-     <div class="refs">
-      <div class="ref-item">
-       BAPTISTA, Josemberg da Silva. Manual de Anatomia Humana para Estudantes de Nutrição. 1. ed. Rio de Janeiro: Guanabara Koogan, 2020.
-      </div>
-      <div class="ref-item">
-       MOORE, Keith L.; DALLEY, Arthur F.; AGUR, Anne M. R. Anatomia Orientada para a Clínica. 9. ed. Rio de Janeiro: Guanabara Koogan, 2023.
-      </div>
-      <div class="ref-item">
-       TORTORA, Gerard J.; DERRICKSON, Bryan H. Princípios de Anatomia e Fisiologia. 16. ed. Rio de Janeiro: Guanabara Koogan, 2021.
-      </div>
-      <div class="ref-item">
-       PAULSEN, Friedrich. Sobotta: Atlas Prático de Anatomia Humana. 3. ed. Rio de Janeiro: Guanabara Koogan, 2019.
-      </div>
-      <div class="ref-item">
-       SCHÜNKE, Michael; SCHULTE, Erik; SCHUMACHER, Udo. Prometheus: Atlas de Anatomia (3 volumes). 4. ed. Rio de Janeiro: Guanabara Koogan, 2019.
-      </div>
-     </div>
     </div>
-   </div>
-  </div><!-- Event Modal -->
-  <div class="modal-overlay" id="eventModal">
-   <div class="modal-content"><button class="modal-close" onclick="closeModal()">×</button>
-    <h3 class="modal-title" id="modalTitle">Event Title</h3>
-    <div class="modal-type" id="modalType">
-     Type
-    </div>
-    <p class="modal-desc" id="modalDesc">Event description</p>
-   </div>
   </div>
+
+  <div class="modal-overlay" id="eventModal" aria-hidden="true">
+    <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <button class="modal-close" onclick="closeModal()" aria-label="Fechar">×</button>
+      <h3 class="modal-title" id="modalTitle">Título do evento</h3>
+      <div class="modal-type" id="modalType">Tipo</div>
+      <p class="modal-desc" id="modalDesc">Descrição do evento</p>
+    </div>
+  </div>
+
   <script>
-    // Calendar data for 2026
     const calendarData = {
-      3: { // March
-        13: { type: 'apresentacao', title: 'Apresentação', desc: 'Apresentação da disciplina. Aula inaugural, apresentação do plano e alinhamento da disciplina.' },
-        20: { type: 'aula', title: 'Introdução à anatomia humana', desc: 'Conceitos iniciais e bases da organização anatômica.' },
-        27: { type: 'aula', title: 'Sistema esquelético', desc: 'Estudo da estrutura óssea e sua organização macroscópica.' }
+      3: {
+        13: { type: 'apresentacao', title: 'Apresentação da disciplina', desc: 'Aula inaugural, apresentação do plano de ensino, critérios de avaliação e alinhamento da disciplina.' },
+        20: { type: 'aula', title: 'Introdução à Anatomia Humana', desc: 'Conceitos iniciais, planos anatômicos, terminologia e bases da organização do corpo humano.' },
+        27: { type: 'aula', title: 'Sistema esquelético', desc: 'Estudo da estrutura óssea, classificação dos ossos e organização macroscópica.' }
       },
-      4: { // April
+      4: {
         3: { type: 'recesso', title: 'Paixão de Cristo', desc: 'Feriado.' },
-        10: { type: 'aula', title: 'Sistema articular', desc: 'Tipos de articulações e correlações anatômicas.' },
-        17: { type: 'aula', title: 'Sistema muscular', desc: 'Organização muscular e aspectos funcionais.' },
+        10: { type: 'aula', title: 'Sistema articular', desc: 'Tipos de articulações, movimentos articulares e correlações anatômicas.' },
+        17: { type: 'aula', title: 'Sistema muscular', desc: 'Organização muscular, classificação dos músculos e aspectos funcionais.' },
         24: { type: 'recesso', title: 'Recesso acadêmico', desc: 'Sem atividade letiva.' }
       },
-      5: { // May
-        8: { type: 'prova', title: 'Avaliação 1 (A1)', desc: 'Prova teórico-prática.' },
-        15: { type: 'aula', title: 'Sistema tegumentar', desc: 'Estrutura e organização da pele e anexos.' },
-        22: { type: 'aula', title: 'Sistema cardiovascular (coração)', desc: 'Estudo anatômico do coração.' },
-        29: { type: 'aula', title: 'Sistema cardiovascular (vasos) + linfático', desc: 'Grandes vasos, circulação e sistema linfático.' }
+      5: {
+        8: { type: 'prova', title: 'Avaliação 1 (A1)', desc: 'Prova teórico-prática abrangendo os conteúdos iniciais da disciplina.' },
+        15: { type: 'aula', title: 'Sistema tegumentar', desc: 'Estrutura, organização e funções da pele e de seus anexos.' },
+        22: { type: 'aula', title: 'Sistema cardiovascular: coração', desc: 'Estudo anatômico do coração, câmaras, válvulas e circulação.' },
+        29: { type: 'aula', title: 'Sistema cardiovascular e linfático', desc: 'Grandes vasos, circulação sistêmica e pulmonar, e introdução ao sistema linfático.' }
       },
-      6: { // June
-        5: { type: 'aula', title: 'Sistema respiratório I', desc: 'Vias aéreas e organização anatômica.' },
+      6: {
+        5: { type: 'aula', title: 'Sistema respiratório I', desc: 'Vias aéreas superiores e inferiores e organização anatômica do sistema respiratório.' },
         12: { type: 'recesso', title: 'Recesso acadêmico', desc: 'Sem atividade letiva.' },
-        19: { type: 'aula', title: 'Sistema respiratório II', desc: 'Pulmões, pleuras e relações anatômicas.' },
-        26: { type: 'prova', title: 'Avaliação 2 (A2)', desc: 'Prova teórico-prática.' }
+        19: { type: 'aula', title: 'Sistema respiratório II', desc: 'Pulmões, pleuras e relações anatômicas torácicas.' },
+        26: { type: 'prova', title: 'Avaliação 2 (A2)', desc: 'Prova teórico-prática sobre os sistemas estudados até o período.' }
       },
-      7: { // July
+      7: {
         3: { type: 'aula', title: 'Sistema digestório I', desc: 'Introdução anatômica ao trato digestório.' },
-        10: { type: 'aula', title: 'Sistema digestório II', desc: 'Estruturas e relações topográficas.' },
-        17: { type: 'aula', title: 'Sistema digestório III', desc: 'Órgãos anexos e integração anatômica.' },
-        24: { type: 'aula', title: 'Sistema digestório IV', desc: 'Síntese do sistema digestório e aplicações.' },
+        10: { type: 'aula', title: 'Sistema digestório II', desc: 'Órgãos do trato digestório e relações topográficas.' },
+        17: { type: 'aula', title: 'Sistema digestório III', desc: 'Órgãos anexos, fígado, vesícula biliar e pâncreas.' },
+        24: { type: 'aula', title: 'Sistema digestório IV', desc: 'Síntese do sistema digestório e aplicações na área da Nutrição.' },
         31: { type: 'recesso', title: 'Recesso acadêmico', desc: 'Sem atividade letiva.' }
       },
-      8: { // August
-        14: { type: 'aula', title: 'Sistema urinário', desc: 'Rins, ureteres, bexiga e uretra.' },
+      8: {
+        14: { type: 'aula', title: 'Sistema urinário', desc: 'Rins, ureteres, bexiga urinária e uretra.' },
         21: { type: 'aula', title: 'Sistema genital', desc: 'Anatomia do sistema genital masculino e feminino.' },
-        28: { type: 'recesso', title: 'Padroeira de Maringá', desc: 'Recesso.' }
+        28: { type: 'recesso', title: 'Padroeira de Maringá', desc: 'Feriado municipal.' }
       },
-      9: { // September
-        4: { type: 'aula', title: 'Sistema nervoso central', desc: 'Encéfalo, medula e organização anatômica.' },
+      9: {
+        4: { type: 'aula', title: 'Sistema nervoso central', desc: 'Encéfalo, medula espinal e organização anatômica do SNC.' },
         11: { type: 'recesso', title: 'Evento acadêmico', desc: 'Sem aula regular.' },
         18: { type: 'prova', title: 'Avaliação 3 (A3)', desc: 'Prova teórico-prática.' },
-        25: { type: 'aula', title: 'Sistema nervoso periférico', desc: 'Nervos, plexos e organização periférica.' }
+        25: { type: 'aula', title: 'Sistema nervoso periférico', desc: 'Nervos, plexos e organização do sistema nervoso periférico.' }
       },
-      10: { // October
+      10: {
         2: { type: 'recesso', title: 'Eleições', desc: 'Sem atividade letiva.' },
         9: { type: 'recesso', title: 'Eleições', desc: 'Sem atividade letiva.' },
-        16: { type: 'aula', title: 'Olfato e gustação', desc: 'Órgãos dos sentidos com foco aplicado.' },
-        23: { type: 'aula', title: 'Sistema endócrino', desc: 'Glândulas e bases anatômicas do sistema endócrino.' },
+        16: { type: 'aula', title: 'Olfato e gustação', desc: 'Órgãos dos sentidos com enfoque anatômico aplicado.' },
+        23: { type: 'aula', title: 'Sistema endócrino', desc: 'Glândulas endócrinas e bases anatômicas do sistema endócrino.' },
         30: { type: 'recesso', title: 'Recesso acadêmico', desc: 'Sem atividade letiva.' }
       },
-      11: { // November
-        6: { type: 'aula', title: 'Revisão geral', desc: 'Síntese teórica dos conteúdos da disciplina.' },
+      11: {
+        6: { type: 'aula', title: 'Revisão geral', desc: 'Síntese teórica dos conteúdos estudados ao longo do ano.' },
         13: { type: 'aula', title: 'Revisão prática', desc: 'Preparação final com enfoque anatômico aplicado.' },
         20: { type: 'recesso', title: 'Consciência Negra', desc: 'Feriado.' }
       },
-      12: { // December
+      12: {
         4: { type: 'prova', title: 'Avaliação 4 (A4)', desc: 'Prova final teórico-prática.' }
       }
     };
@@ -693,7 +664,8 @@
       course_code: 'Anatomia Humana • Nutrição',
       start_date: '13/03/2026',
       end_date: '04/12/2026',
-      meeting_time: 'Sexta-feira • 19h30 às 21h10'
+      meeting_time: 'Sexta-feira • 19h30 às 21h10',
+      course_description: 'Planejamento anual da disciplina com aulas, avaliações e períodos de feriado ou recesso acadêmico.'
     };
 
     let config = { ...defaultConfig };
@@ -704,6 +676,13 @@
 
     function getFirstDayOfMonth(year, month) {
       return new Date(year, month - 1, 1).getDay();
+    }
+
+    function getChipLabel(type) {
+      if (type === 'apresentacao') return 'Apresentação';
+      if (type === 'aula') return 'Aula';
+      if (type === 'prova') return 'Avaliação';
+      return 'Feriado';
     }
 
     function renderCalendar() {
@@ -721,7 +700,6 @@
         const monthGrid = document.createElement('div');
         monthGrid.className = 'month-grid';
 
-        // Day names
         dayNames.forEach(day => {
           const dow = document.createElement('div');
           dow.className = 'dow';
@@ -732,23 +710,17 @@
         const firstDay = getFirstDayOfMonth(2026, month);
         const daysInMonth = getDaysInMonth(2026, month);
 
-        // Empty cells before first day
         for (let i = 0; i < firstDay; i++) {
           const emptyDay = document.createElement('div');
           emptyDay.className = 'day empty';
           monthGrid.appendChild(emptyDay);
         }
 
-        // Days
         for (let day = 1; day <= daysInMonth; day++) {
           const dayEl = document.createElement('div');
           const event = calendarData[month]?.[day];
 
-          if (event) {
-            dayEl.className = `day has-event ${event.type}`;
-          } else {
-            dayEl.className = 'day';
-          }
+          dayEl.className = event ? `day has-event ${event.type}` : 'day';
 
           const dayNum = document.createElement('div');
           dayNum.className = 'day-num';
@@ -758,9 +730,7 @@
           if (event) {
             const chip = document.createElement('div');
             chip.className = 'event-chip';
-            chip.textContent = event.type === 'apresentacao' ? 'Apresentação' :
-                              event.type === 'aula' ? 'Aula' :
-                              event.type === 'prova' ? 'Avaliação' : 'Feriado';
+            chip.textContent = getChipLabel(event.type);
             dayEl.appendChild(chip);
 
             const title = document.createElement('div');
@@ -787,25 +757,28 @@
 
     function openModal(event) {
       const modal = document.getElementById('eventModal');
-      document.getElementById('modalTitle').textContent = event.title;
-
       const typeMap = {
-        'apresentacao': 'Apresentação',
-        'aula': 'Aula',
-        'prova': 'Avaliação',
-        'recesso': 'Feriado / Recesso'
+        apresentacao: 'Apresentação',
+        aula: 'Aula',
+        prova: 'Avaliação',
+        recesso: 'Feriado / Recesso'
       };
+
+      document.getElementById('modalTitle').textContent = event.title;
+      document.getElementById('modalDesc').textContent = event.desc;
 
       const typeEl = document.getElementById('modalType');
       typeEl.textContent = typeMap[event.type] || event.type;
-      typeEl.className = `modal-type ${event.type === 'apresentacao' ? 'apresentacao' : event.type === 'aula' ? 'aula' : event.type === 'prova' ? 'prova' : 'recesso'}`;
+      typeEl.className = `modal-type ${event.type}`;
 
-      document.getElementById('modalDesc').textContent = event.desc;
       modal.classList.add('active');
+      modal.setAttribute('aria-hidden', 'false');
     }
 
     function closeModal() {
-      document.getElementById('eventModal').classList.remove('active');
+      const modal = document.getElementById('eventModal');
+      modal.classList.remove('active');
+      modal.setAttribute('aria-hidden', 'true');
     }
 
     function onConfigChange(newConfig) {
@@ -813,9 +786,9 @@
       document.getElementById('instructorName').textContent = newConfig.instructor_name || defaultConfig.instructor_name;
       document.getElementById('coursePeriod').textContent = (newConfig.start_date || defaultConfig.start_date) + ' a ' + (newConfig.end_date || defaultConfig.end_date);
       document.getElementById('meetingTime').textContent = newConfig.meeting_time || defaultConfig.meeting_time;
+      document.getElementById('courseDescription').textContent = newConfig.course_description || defaultConfig.course_description;
     }
 
-    // Initialize Element SDK
     window.elementSdk.init({
       defaultConfig,
       onConfigChange: async (newCfg) => {
@@ -834,17 +807,21 @@
         ['course_code', cfg.course_code || defaultConfig.course_code],
         ['start_date', cfg.start_date || defaultConfig.start_date],
         ['end_date', cfg.end_date || defaultConfig.end_date],
-        ['meeting_time', cfg.meeting_time || defaultConfig.meeting_time]
+        ['meeting_time', cfg.meeting_time || defaultConfig.meeting_time],
+        ['course_description', cfg.course_description || defaultConfig.course_description]
       ])
     });
 
-    // Close modal when clicking overlay
     document.getElementById('eventModal').addEventListener('click', (e) => {
       if (e.target.id === 'eventModal') closeModal();
     });
 
-    // Render calendar on load
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeModal();
+    });
+
     renderCalendar();
+    onConfigChange(config);
   </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9de5102ac61f139f',t:'MTc3Mzg0NTU2Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
-</html>
+</body>
+ </html>
